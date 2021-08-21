@@ -31,9 +31,34 @@
 
 1. Hypothesis
 
-    ![hypothesis](./img/lr_hypo.png)
+    <img src = "./img/lr_hypo.png" width="40%">
 
+2. Cost/loss function
 
+    ![cost-function](./img/lr_cf.png)
+    * 비용이 클수록(함수의 결과가 클수록) 평균과 차이가 크다는 뜻
+    * 평균으로 가기 위한 비용이 많이 발생한다는 뉘앙스
+
+3. Goal (Algorithm): Gradient Descent Algorithm
+* 동작 과정: 
+    1. Make convex function(model을 제곱)
+
+        ![convex-function](./img/lr_convex.png)
+        * Linear regression에서 사용하는 cost function은 convex하게 모양이 잘 나옴
+        * 그러나 cost function이 복잡해지면 cost function을 convex하게 만들기 어려움
+            * 'local minima' problem에 빠질 수 있음
+            * 해당 문제를 해결하는 방법은 오늘날에도 활발히 연구되고 있는 분야
+    
+    2. <i>W</i>, <i>b</i>에 대해 편미분
+    3. <i>W</i>, <i>b</i> 갱신(update)
+
+    ![gradient-descent1](./img/lr_gd1.png)
+
+    ![gradient-descent2](./img/lr_gd2.png)
+
+    ![gradient-descent3](./img/lr_gd3.png)
+
+    ![gradient-descent4](./img/lr_gd4.png)
 
 
 
