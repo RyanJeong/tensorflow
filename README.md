@@ -13,12 +13,16 @@ TensorFlow Tutorials
     pip install numpy
     pip install tensorflow  # or tensorflow-gpu
     pip install six
+    pip install matplotlib
+    pip install ipykernel
     ```
 2. Install extensions from the VSCode:
     1. `Python`
     2. `Python for VSCode`
     3. `Python Extension Pack`
     4. `TensorFlow Snippets`
+    5. `Jupyter`
+    6. 
 
 ## Introduction of TensorFlow
 * TensorFlow Mechanics:

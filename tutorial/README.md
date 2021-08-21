@@ -1,6 +1,11 @@
 # Machine Learning 
 ## Index
 * [Machine Learning](#machine-learning)
+    * [Supervised Learning](#supervised-learning)
+        * Linear Regression
+        * Binary Classification
+        * Multi-label Classification
+    * [Unsupervised Learning](#unsupervised-learning)
 
 ---
 
@@ -31,11 +36,11 @@
 
 1. Hypothesis
 
-    <img src = "./img/lr_hypo.png" width="40%">
+    <img src = "./img/lr_hypo.png" width="80%">
 
 2. Cost/loss function
 
-    ![cost-function](./img/lr_cf.png)
+    <img src = "./img/lr_cf.png" width="80%">
     * 비용이 클수록(함수의 결과가 클수록) 평균과 차이가 크다는 뜻
     * 평균으로 가기 위한 비용이 많이 발생한다는 뉘앙스
 
@@ -43,7 +48,7 @@
 * 동작 과정: 
     1. Make convex function(model을 제곱)
 
-        ![convex-function](./img/lr_convex.png)
+        <img src = "./img/lr_convex.png" width="80%">
         * Linear regression에서 사용하는 cost function은 convex하게 모양이 잘 나옴
         * 그러나 cost function이 복잡해지면 cost function을 convex하게 만들기 어려움
             * 'local minima' problem에 빠질 수 있음
@@ -52,15 +57,35 @@
     2. <i>W</i>, <i>b</i>에 대해 편미분
     3. <i>W</i>, <i>b</i> 갱신(update)
 
-    ![gradient-descent1](./img/lr_gd1.png)
+        <img src = "./img/lr_gd1.png" width="80%">
 
-    ![gradient-descent2](./img/lr_gd2.png)
+        <img src = "./img/lr_gd2.png" width="80%">
 
-    ![gradient-descent3](./img/lr_gd3.png)
+        <img src = "./img/lr_gd3.png" width="80%">
 
-    ![gradient-descent4](./img/lr_gd4.png)
+        <img src = "./img/lr_gd4.png" width="80%">
+
+#### Binary Classification (in supervised learning)
+* Linear regression의 hypothesis 값은 -∞에서부터 ∞까지 광범위하게 분포할 수 있고, 이는 classification에 매우 불리함 (linear regression)
+* Binary classification 시 Sigmoid function 사용해 값의 범위를 압축해 위 문제를 해결함과 동시에 classification을 성공적으로 할 수 있음 (logistic classification)
+
+    <img src = "./img/bc_reason.png" width="80%">
+
+    * Linear regression에서의 hypothesis를 사용하면 classification 시 사용할 수 있는 문제
+
+1. Hypothesis
+    * 값의 범위를 0~1로 압축
+    * Sigmoid (logistic function)
+
+        <img src = "./img/bc_sigmoid.png" width="80%">
+
+        * <i>x</i>의 자리에 random weight <i>W</i>와 input data <i>X</i>를 넣어 사용함
+        * <i>f</i>(<i>x</i>) = <i>f</i>(<i>XW</i>)
+
+2. Cost/loss function (logistic cost)
+    * Linear regression에서는 convex가 잘 형성됨
+    * Sigmoid 함수는 convex가 잘 형성되지 않음
 
 
 
-
-
+3. Goal: Gradient Descent Algorithm
