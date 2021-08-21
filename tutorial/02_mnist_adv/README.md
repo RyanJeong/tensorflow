@@ -2,39 +2,103 @@
 ```python
 import tensorflow as tf
 
+from tensorflow.keras.layers import Dense, Flatten, Conv2D
+from tensorflow.keras import Model
+
 mnist = tf.keras.datasets.mnist
 
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 x_train, x_test = x_train / 255.0, x_test / 255.0
 
-model = tf.keras.models.Sequential([
-  tf.keras.layers.Flatten(input_shape=(28, 28)),
-  tf.keras.layers.Dense(128, activation='relu'),
-  tf.keras.layers.Dropout(0.2),
-  tf.keras.layers.Dense(10, activation='softmax')
-])
+# Add a channels dimension
+x_train = x_train[..., tf.newaxis].astype("float32")
+x_test = x_test[..., tf.newaxis].astype("float32")
 
-model.compile(optimizer='adam',
-              loss='sparse_categorical_crossentropy',
-              metrics=['accuracy'])
+train_ds = tf.data.Dataset.from_tensor_slices(
+    (x_train, y_train)).shuffle(10000).batch(32)
 
-model.fit(x_train, y_train, epochs=5)
+test_ds = tf.data.Dataset.from_tensor_slices((x_test, y_test)).batch(32)
 
-model.evaluate(x_test,  y_test, verbose=2)
+class MyModel(Model):
+  def __init__(self):
+    super(MyModel, self).__init__()
+    self.conv1 = Conv2D(32, 3, activation='relu')
+    self.flatten = Flatten()
+    self.d1 = Dense(128, activation='relu')
+    self.d2 = Dense(10)
+
+  def call(self, x):
+    x = self.conv1(x)
+    x = self.flatten(x)
+    x = self.d1(x)
+    return self.d2(x)
+
+# Create an instance of the model
+model = MyModel()
+
+loss_object = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
+
+optimizer = tf.keras.optimizers.Adam()
+
+train_loss = tf.keras.metrics.Mean(name='train_loss')
+train_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='train_accuracy')
+
+test_loss = tf.keras.metrics.Mean(name='test_loss')
+test_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='test_accuracy')
+
+@tf.function
+def train_step(images, labels):
+  with tf.GradientTape() as tape:
+    # training=True is only needed if there are layers with different
+    # behavior during training versus inference (e.g. Dropout).
+    predictions = model(images, training=True)
+    loss = loss_object(labels, predictions)
+  gradients = tape.gradient(loss, model.trainable_variables)
+  optimizer.apply_gradients(zip(gradients, model.trainable_variables))
+
+  train_loss(loss)
+  train_accuracy(labels, predictions)
+
+@tf.function
+def test_step(images, labels):
+  # training=False is only needed if there are layers with different
+  # behavior during training versus inference (e.g. Dropout).
+  predictions = model(images, training=False)
+  t_loss = loss_object(labels, predictions)
+
+  test_loss(t_loss)
+  test_accuracy(labels, predictions)
+
+EPOCHS = 5
+
+for epoch in range(EPOCHS):
+  # Reset the metrics at the start of the next epoch
+  train_loss.reset_states()
+  train_accuracy.reset_states()
+  test_loss.reset_states()
+  test_accuracy.reset_states()
+
+  for images, labels in train_ds:
+    train_step(images, labels)
+
+  for test_images, test_labels in test_ds:
+    test_step(test_images, test_labels)
+
+  print(
+    f'Epoch {epoch + 1}, '
+    f'Loss: {train_loss.result()}, '
+    f'Accuracy: {train_accuracy.result() * 100}, '
+    f'Test Loss: {test_loss.result()}, '
+    f'Test Accuracy: {test_accuracy.result() * 100}'
+  )
 ```
 
 * Results:
 ```text
 # python3 main.py
-Epoch 1/5
-1875/1875 [==============================] - 1s 645us/step - loss: 0.3015 - accuracy: 0.9122
-Epoch 2/5
-1875/1875 [==============================] - 1s 635us/step - loss: 0.1471 - accuracy: 0.9561
-Epoch 3/5
-1875/1875 [==============================] - 1s 648us/step - loss: 0.1100 - accuracy: 0.9666
-Epoch 4/5
-1875/1875 [==============================] - 1s 646us/step - loss: 0.0891 - accuracy: 0.9724
-Epoch 5/5
-1875/1875 [==============================] - 1s 632us/step - loss: 0.0761 - accuracy: 0.9759
-313/313 - 0s - loss: 0.0728 - accuracy: 0.9771
+Epoch 1, Loss: 0.13406424224376678, Accuracy: 95.9800033569336, Test Loss: 0.06830736994743347, Test Accuracy: 97.61000061035156
+Epoch 2, Loss: 0.041436824947595596, Accuracy: 98.70500183105469, Test Loss: 0.06204809248447418, Test Accuracy: 98.04999542236328
+Epoch 3, Loss: 0.021078230813145638, Accuracy: 99.33333587646484, Test Loss: 0.05792301520705223, Test Accuracy: 98.22999572753906
+Epoch 4, Loss: 0.013446375727653503, Accuracy: 99.54499816894531, Test Loss: 0.060457777231931686, Test Accuracy: 98.29000091552734
+Epoch 5, Loss: 0.008602363057434559, Accuracy: 99.72833251953125, Test Loss: 0.06619492918252945, Test Accuracy: 98.31999969482422
 ```
