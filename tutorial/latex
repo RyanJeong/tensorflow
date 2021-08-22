@@ -1,2 +1,18 @@
 % Logistic regresstion cost function
 Cost(H(x),y)\;=\;y\log(H(x))-(1-y)\log(1-H(x))
+
+% Softmax hypothesis
+H_L(x)=W^TX+b \\
+H(x)=S(H_L(x)), \;\; S(z_i)=\frac{e^{z_i}}{\sum_{j=1}^{n}e^{z_j}}
+
+% Softmax cost function
+D(S, L)=-\sum\_{i=1}^{n}L_i\log(S_i)
+
+% Logistic cost vs. Cross enproty
+\begin{aligned}
+D(S, L)& =-\sum_{i=1}^{n}L_i\log(S_i) \\
+& = -\sum_{i=1}^{n}(L_i^a\log(S_i^a)+L_i^b\log(S_i^b)) \\
+& = -\sum_{i=1}^{n}(L_i^a\log(S_i^a)+(1-L_i^a)\log(1-S_i^a)) \\
+& = -\sum_{i=1}^{n}(y_i\log(H(x_i))+(1-y)\log(1-H(x_i))) \\
+& = -\sum_{i=1}^{n}y_i\log(H(x_i))-\sum_{i=1}^{n}(1-y)\log(1-H(x_i))
+\end{aligned}

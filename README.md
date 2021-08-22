@@ -61,4 +61,19 @@ TensorFlow Tutorials
 |DT_INT64|`tf.int64`|64 bits signed integer.|
 |...|...|...|
 
+### Epoch, Batch Size, Number of Iterations
+* To be clear, one pass is one forward pass + one backward pass.
+* One epoch
+    * One forward pass and one backward pass of all the training examples
+* Batch size
+    * The number of training examples in one forward/backward pass.
+    * The higher the batch size, the more memory space need.
+* Number of iterations
+    * Number of passes, each pass using number of examples(batch size)
+
+* 1,000 training examples, and batch size is 500, then it will take 2 iterations to complete 1 epoch.
+
 [Module: tf.dtypes](https://www.tensorflow.org/api_docs/python/tf/dtypes)
+
+## Useful Website:
+* [desmos](https://www.desmos.com/calculator?lang=ko)
