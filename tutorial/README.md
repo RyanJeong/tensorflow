@@ -41,6 +41,7 @@
 2. Cost/loss function
 
     <img src = "./img/lr_cf.png" width="80%">
+
     * 비용이 클수록(함수의 결과가 클수록) 평균과 차이가 크다는 뜻
     * 평균으로 가기 위한 비용이 많이 발생한다는 뉘앙스
 
@@ -49,6 +50,7 @@
     1. Make convex function(model을 제곱)
 
         <img src = "./img/lr_convex.png" width="80%">
+
         * Linear regression에서 사용하는 cost function은 convex하게 모양이 잘 나옴
         * 그러나 cost function이 복잡해지면 cost function을 convex하게 만들기 어려움
             * 'local minima' problem에 빠질 수 있음
