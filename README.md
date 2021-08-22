@@ -22,7 +22,6 @@ TensorFlow Tutorials
     3. `Python Extension Pack`
     4. `TensorFlow Snippets`
     5. `Jupyter`
-    6. 
 
 ## Introduction of TensorFlow
 * TensorFlow Mechanics:
