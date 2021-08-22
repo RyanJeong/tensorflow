@@ -1,0 +1,2 @@
+% Logistic regresstion cost function
+Cost(H(x),y)\;=\;y\log(H(x))-(1-y)\log(1-H(x))

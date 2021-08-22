@@ -47,7 +47,7 @@
 
 3. Goal (Algorithm): Gradient Descent Algorithm
 * 동작 과정: 
-    1. Make convex function(model을 제곱)
+    1. Make convex function(MSE equation)
 
         <img src = "./img/lr_convex.png" width="80%">
 
@@ -68,12 +68,13 @@
         <img src = "./img/lr_gd4.png" width="80%">
 
 #### Binary Classification (in supervised learning)
+* Logistic regression 또는 logistic classification으로도 불림
 * Linear regression의 hypothesis 값은 -∞에서부터 ∞까지 광범위하게 분포할 수 있고, 이는 classification에 매우 불리함 (linear regression)
 * Binary classification 시 Sigmoid function 사용해 값의 범위를 압축해 위 문제를 해결함과 동시에 classification을 성공적으로 할 수 있음 (logistic classification)
 
     <img src = "./img/bc_reason.png" width="80%">
 
-    * Linear regression에서의 hypothesis를 사용하면 classification 시 사용할 수 있는 문제
+    * Linear regression에서의 hypothesis를 사용하면 classification 시 발생할 수 있는 문제
 
 1. Hypothesis
     * 값의 범위를 0~1로 압축
@@ -87,7 +88,32 @@
 2. Cost/loss function (logistic cost)
     * Linear regression에서는 convex가 잘 형성됨
     * Sigmoid 함수는 convex가 잘 형성되지 않음
+    * Convex 함수 판별:
+        * <i>f</i>(<i>tx</i> + (1 - <i>t</i>)<i>y</i>) ≤ <i>tf</i>(<i>x</i>) + (1 - <i>t</i>)<i>f</i>(<i>y</i>)
 
+            <img src = "./img/convex.png" width="80%">
+    
+    * Logistic classification 함수를 MSE equation에 대입한 결과를 보면 convex하지 않음:
+
+        <img src = "./img/non-convex.png" width="80%">
+
+        * <b>Convex하지 않은 함수는 여러 극점이 존재</b>하며, gradient descent algorithm을 적용하면 목표인 global minimum을 찾지 못하고 local minima에 도달하거나 saddle point에 도달할 수 있음
+        * 결국 올바른 결과를 반환할 수 없으며, <b>새로운 cost function</b>이 필요함
+    
+    * 새로운 cost function
+
+        <img src = "./img/bc_new_cost.png" width="80%">
+
+        * If condition을 제거한 최종 cost function은 아래와 같다:
+
+            <img src = "./img/bc_new_cost_opt.png" width="80%">
 
 
 3. Goal: Gradient Descent Algorithm
+* 동작 과정:
+    1. Make convex function(via using log function)
+    2. 편미분
+    3. Update variables
+    4. Prediction
+
+        <img src = "./img/bc_sgd.png" width="80%">
