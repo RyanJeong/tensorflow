@@ -223,12 +223,15 @@
                 2. Accuracy(validation set의 data를 넣었을 때의 prediction 값과 해당 data의 label 비교 후 일치여부 확인) 확인 후 learning rate, regularization 조절
             4. Prediction 결과와 실제 데이터를 비교해 Accuracy 확인
 
-    * Training, Validation and test sets:
+    * [Training, Validation and test sets](https://towardsdatascience.com/train-validation-and-test-sets-72cb40cba9e7):
 
         <img src = "./img/app08.png" width="80%">
 
         * 보통 학습 데이터의 70% 정도를 training data set으로, 30% 정도를 validation set으로 사용
-        * Testing set은 절대 학습해서는 안됨
+        * Validation set과 testing set은 절대 학습해서는 안됨
+            * Validation set은 학습 중인 model의 accuracy를 판단해 과적합 등의 문제를 해결하거나 여러 model 중 가장 좋은 성능을 보이는 model을 선택할 때 사용
+            * 가장 우수한 model을 선택하는 것이 아니라면, validation set을 통한 accuracy 결과를 보고 learning rate 또는 ragularization 등의 parameter를 조정할 수 있음
+            * testing set은 학습이 완료된 model(여러 번 training set을 통해 학습하고 validation set을 통해 parameter을 조정하여 가장 우수한 model을 선택)에 unseed data를 사용해 accuracy를 구하는 데 사용
     
     * 학습 데이터 양이 너무 많을 경우 online learning을 사용:
 
